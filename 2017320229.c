@@ -104,7 +104,7 @@ int main(){
 					buf_struct.operation=OP_ECHO;
 					buf_struct.data_len=buf_struct_rcv.data_len;
 					buf_struct.seq_num=buf_struct_rcv.seq_num;
-					buf_struct.data[0]="\0"
+					buf_struct.data[0]="\0";
 					buf_struct.data=buf_struct_rcv.data;
 					if(send(s,&buf_struct,sizeof(buf_struct),0)<0){
 						perror("simplex-talk: send ECHO packet");
@@ -121,7 +121,7 @@ int main(){
 					buf_struct.seq_num=buf_struct_rcv.seq_num;
 					buf_struct.data_len=4;
 					buf_struct.operation=OP_DECREMENT;
-					buf_struct.data[0]="\0"
+					buf_struct.data[0]="\0";
 					memcpy(&value, buf_struct_rcv.data, sizeof(unsigned int));
 					--value;
 					memcpy(buf_struct.data, &value, sizeof(unsigned int));
