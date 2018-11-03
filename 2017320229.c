@@ -104,6 +104,7 @@ int main(){
 					buf_struct.operation=OP_ECHO;
 					buf_struct.data_len=buf_struct_rcv.data_len;
 					buf_struct.seq_num=buf_struct_rcv.seq_num;
+					printf("str len : %u", buf_struct_rcv.data_len);
 					//buf_struct.data[0]="\0";
 					memcpy(buf_struct.data, buf_struct_rcv.data, sizeof(buf_struct_rcv.data_len));
 					if(send(s,&buf_struct,sizeof(buf_struct),0)<0){
