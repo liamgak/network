@@ -81,7 +81,7 @@ int main(){
 		//receive packet.
 		if(recv(s, &buf_struct_rcv, sizeof(buf_struct))<0){
 			perror("simplex-talk: receive instruction packet");
-			print("%d",count);
+			printf("%d",count);
 			close(s);
 			exit(1);
 		}
