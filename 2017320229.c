@@ -131,7 +131,7 @@ int main(){
 						exit(1);
 					}
 					printf("decrement : %u\n",value);
-					printf("sent response msg with seq.num. %u to server", buf_struct.seq_num);
+					printf("sent response msg with seq.num. %u to server\n\n", buf_struct.seq_num);
 				}
 				else if(buf_struct_rcv.operation==OP_INCREMENT){
 					printf("operation type is increment.\n");
@@ -149,7 +149,7 @@ int main(){
 						exit(1);
 					}
 					printf("increment : %u\n",value);
-					printf("sent response msg with seq.num. %u to server", buf_struct.seq_num);
+					printf("sent response msg with seq.num. %u to server\n\n", buf_struct.seq_num);
 					
 				}
 				/*error*/
