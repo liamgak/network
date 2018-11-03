@@ -98,14 +98,14 @@ int main(){
 			case FLAG_INSTRUCTION:
 				printf("received instruction message! received data_len : %d bytes\n", buf_struct_rcv.data_len);
 				if(buf_struct_rcv.operation==OP_ECHO){
-					print("operation type is echo.\n");
+					printf("operation type is echo.\n");
 
 				}
 				else if(buf_struct_rcv.operation==OP_DECREMENT){
-					print("operation type is decrement.\n");
+					printf("operation type is decrement.\n");
 				}
 				else if(buf_struct_rcv.operation==OP_ECHO){
-					print("operation type is echo.\n");
+					printf("operation type is echo.\n");
 				}
 				/*error*/
 				else{
