@@ -25,7 +25,7 @@ struct hw_packet{
 	unsigned short data_len; //16 bits (2 bytes) data length
 	unsigned int seq_num; //32 bits (4bytes) sequence number
 	char data[1024]; //optional data
-}
+};
 
 int main(){
 
