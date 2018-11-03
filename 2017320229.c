@@ -65,9 +65,9 @@ int main(){
 		close(s);
 		exit(1);
 	}
-	
-	printf("sending first hello msg...");
+
 	/*send HELLO packet.*/
+	printf("sending first hello msg...");
 	if(send(s,&buf_struct,sizeof(buf_struct),0)<0){
 		perror("simplex-talk: send HELLO packet");
 		close(s);
@@ -88,25 +88,40 @@ int main(){
 
 		/*parser received data.*/
 		switch(buf_struct_rcv.flag){
+			//parse HELLO packet data
 			case FLAG_HELLO:
-				printf("received hello message from the server");
+				printf("received hello message from the server\n");
+				printf("waiting for the first instruction message...\n");
 				break;
 			
+			//parse instruction packet data
 			case FLAG_INSTRUCTION:
-				break;
-			
-			case FLAG_RESPONSE:
+				printf("received instruction message! received data_len : %d bytes\n", buf_struct_rcv.data_len);
+				if(buf_struct_rcv.operation==OP_ECHO){
+					print("operation type is echo.\n");
+
+				}
+				else if(buf_struct_rcv.operation==OP_DECREMENT){
+					print("operation type is decrement.\n");
+				}
+				else if(buf_struct_rcv.operation==OP_ECHO){
+					print("operation type is echo.\n");
+				}
+				/*error*/
+				else{
+					perror("simplex-talk: parse received packet\n");
+				}
 				break;
 			
 			case FLAG_TERMINATE:
+				printf("received terminate message from\n");
+
 				break;
 
 			default:
-				perror("simplex-talk: parse received packet");
+				perror("simplex-talk: parse received packe\n");
+				break;
 		}
 	} 
-
-
-
 	return 0;
 }
