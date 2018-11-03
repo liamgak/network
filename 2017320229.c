@@ -104,7 +104,7 @@ int main(){
 					buf_struct.operation=OP_ECHO;
 					buf_struct.data_len=buf_struct_rcv.data_len;
 					buf_struct.seq_num=buf_struct_rcv.seq_num;
-					buf_struct.data[0]="\0";
+					//buf_struct.data[0]="\0";
 					memcpy(buf_struct.data, buf_struct_rcv.data, sizeof(buf_struct_rcv.data_len));
 					if(send(s,&buf_struct,sizeof(buf_struct),0)<0){
 						perror("simplex-talk: send ECHO packet");
@@ -116,12 +116,12 @@ int main(){
 					printf("sent response msg with seq.num. %u to server",buf_struct.seq_num);
 				}
 				else if(buf_struct_rcv.operation==OP_DECREMENT){
-					printf("\noperation type is decrement.\n");
+					printf("operation type is decrement.\n");
 					buf_struct.flag=FLAG_RESPONSE;
 					buf_struct.seq_num=buf_struct_rcv.seq_num;
 					buf_struct.data_len=4;
 					buf_struct.operation=OP_DECREMENT;
-					buf_struct.data[0]="\0";
+					//buf_struct.data[0]="\0";
 					memcpy(&value, buf_struct_rcv.data, sizeof(unsigned int));
 					--value;
 					memcpy(buf_struct.data, &value, sizeof(unsigned int));
@@ -134,12 +134,12 @@ int main(){
 					printf("sent response msg with seq.num. %u to server", buf_struct.seq_num);
 				}
 				else if(buf_struct_rcv.operation==OP_INCREMENT){
-					printf("\noperation type is increment.\n");
+					printf("operation type is increment.\n");
 					buf_struct.flag=FLAG_RESPONSE;
 					buf_struct.seq_num=buf_struct_rcv.seq_num;
 					buf_struct.data_len=4;
 					buf_struct.operation=OP_INCREMENT;
-					buf_struct.data[0]="\0";
+					//buf_struct.data[0]="\0";
 					memcpy(&value, buf_struct_rcv.data, sizeof(unsigned int));
 					++value;
 					memcpy(buf_struct.data, &value, sizeof(unsigned int));
