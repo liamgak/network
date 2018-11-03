@@ -62,7 +62,7 @@ int main(){
 	}
 	
 	//send HELLO packet
-	if(send(s,buf_struct,sizeof(buf_struct),0)<0){
+	if(send(s,&buf_struct,sizeof(buf_struct),0)<0){
 		perror("simplex-talk: send HELLO packet");
 		close(s);
 		exit(1);
