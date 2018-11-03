@@ -78,7 +78,7 @@ int main(){
 	/*iterate until the server sends TERMINATION packet.*/
 	while(1){
 		/*receive packet.*/
-		if(recv(s, &buf_struct_rcv, sizeof(buf_struct))<0){
+		if(recv(s, &buf_struct_rcv, sizeof(buf_struct),0)<0){
 			perror("simplex-talk: receive instruction packet");
 			printf("%d",count);
 			close(s);
