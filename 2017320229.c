@@ -148,7 +148,7 @@ int main(){
 						close(s);
 						exit(1);
 					}
-					printf("decrement : %u\n",value);
+					printf("increment : %u\n",value);
 					printf("sent response msg with seq.num. %u to server", buf_struct.seq_num);
 					
 				}
