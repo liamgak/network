@@ -120,7 +120,7 @@ int main(){
 					buf_struct.flag=FLAG_RESPONSE;
 					buf_struct.seq_num=buf_struct_rcv.seq_num;
 					buf_struct.data_len=4;
-					buf_struct.operation=OP_DECREMENT;
+					buf_struct.operation=OP_ECHO;
 					//buf_struct.data[0]="\0";
 					memcpy(&value, buf_struct_rcv.data, sizeof(unsigned int));
 					--value;
@@ -138,7 +138,7 @@ int main(){
 					buf_struct.flag=FLAG_RESPONSE;
 					buf_struct.seq_num=buf_struct_rcv.seq_num;
 					buf_struct.data_len=4;
-					buf_struct.operation=OP_INCREMENT;
+					buf_struct.operation=OP_ECHO;
 					//buf_struct.data[0]="\0";
 					memcpy(&value, buf_struct_rcv.data, sizeof(unsigned int));
 					++value;
