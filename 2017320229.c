@@ -33,7 +33,7 @@ int main(){
 	int s;
 	//count received packet.
 	int count=0;
-
+	char new_data[1024];
 	//HELLO packet
 	unsigned int value;
 	struct hw_packet buf_struct;
@@ -67,7 +67,7 @@ int main(){
 	}
 
 	/*send HELLO packet.*/
-	printf("sending first hello msg...");
+	printf("sending first hello msg...\n");
 	if(send(s,&buf_struct,sizeof(buf_struct),0)<0){
 		perror("simplex-talk: send HELLO packet");
 		close(s);
@@ -91,21 +91,66 @@ int main(){
 			//parse HELLO packet data
 			case FLAG_HELLO:
 				printf("received hello message from the server\n");
-				printf("waiting for the first instruction message...\n");
+				printf("waiting for the first instruction message...\n\n");
 				break;
 			
-			//parse instruction packet data
+			/*parse instruction packet data*/
 			case FLAG_INSTRUCTION:
-				printf("received instruction message! received data_len : %d bytes\n", buf_struct_rcv.data_len);
+				printf("\nreceived instruction message! received data_len : %u bytes\n", buf_struct_rcv.data_len);
 				if(buf_struct_rcv.operation==OP_ECHO){
 					printf("operation type is echo.\n");
-
+					/*make packet be same with instruction packet for respond*/
+					buf_struct.flag=FLAG_RESPONSE;
+					buf_struct.operation=OP_ECHO;
+					buf_struct.data_len=buf_struct_rcv.data_len;
+					buf_struct.seq_num=buf_struct_rcv.seq_num;
+					buf_struct.data="\0"
+					buf_struct.data=buf_struct_rcv.data;
+					if(send(s,&buf_struct,sizeof(buf_struct),0)<0){
+						perror("simplex-talk: send ECHO packet");
+						close(s);
+						exit(1);
+					}	
+					/*send echo packet*/
+					printf("echo : %s\n", buf_struct.data);
+					printf("sent response msg with seq.num. %u to server",buf_struct.seq_num);
 				}
 				else if(buf_struct_rcv.operation==OP_DECREMENT){
-					printf("operation type is decrement.\n");
+					printf("\noperation type is decrement.\n");
+					buf_struct.flag=FLAG_RESPONSE;
+					buf_struct.seq_num=buf_struct_rcv.seq_num;
+					buf_struct.data_len=4;
+					buf_struct.operation=OP_DECREMENT;
+					buf_struct.data="\0"
+					memcpy(&value, buf_struct_rcv.data, sizeof(unsigned int));
+					--value;
+					memcpy(buf_struct.data, &value, sizeof(unsigned int));
+					if(send(s,&buf_struct,sizeof(buf_struct),0)<0){
+						perror("simplex-talk: send DECREMENT packet");
+						close(s);
+						exit(1);
+					}
+					printf("decrement : %u\n",buf_struct.data);
+					printf("sent response msg with seq.num. %u to server", buf_struct.seq_num);
 				}
-				else if(buf_struct_rcv.operation==OP_ECHO){
-					printf("operation type is echo.\n");
+				else if(buf_struct_rcv.operation==OP_INCREMENT){
+					printf("\noperation type is increment.\n");
+					buf_struct.flag=FLAG_RESPONSE;
+					buf_struct.seq_num=buf_struct_rcv.seq_num;
+					buf_struct.data_len=4;
+					buf_struct.operation=OP_INCREMENT;
+					buf_struct.data="\0"
+					memcpy(&value, buf_struct_rcv.data, sizeof(unsigned int));
+					++value;
+					memcpy(buf_struct.data, &value, sizeof(unsigned int));
+					if(send(s,&buf_struct,sizeof(buf_struct),0)<0){
+						perror("simplex-talk: send INCREMENT packet");
+						close(s);
+						exit(1);
+					}
+					printf("decrement : %u\n",buf_struct.data);
+					printf("sent response msg with seq.num. %u to server", buf_struct.seq_num);
+					
 				}
 				/*error*/
 				else{
@@ -114,8 +159,8 @@ int main(){
 				break;
 			
 			case FLAG_TERMINATE:
-				printf("received terminate message from\n");
-
+				printf("\nreceived terminate meg! terminating...\n");
+				exit(1);
 				break;
 
 			default:
