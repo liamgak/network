@@ -114,7 +114,7 @@ int main(){
 					}	
 					/*send echo packet*/
 					printf("echo : %s\n", buf_struct.data);
-					printf("sent response msg with seq.num. %u to server",buf_struct.seq_num);
+					printf("sent response msg with seq.num. %u to server\n",buf_struct.seq_num);
 				}
 				else if(buf_struct_rcv.operation==OP_DECREMENT){
 					printf("operation type is decrement.\n");
