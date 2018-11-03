@@ -66,7 +66,7 @@ int main(){
 		exit(1);
 	}
 	
-	printf("sending first hello msg...")
+	printf("sending first hello msg...");
 	/*send HELLO packet.*/
 	if(send(s,&buf_struct,sizeof(buf_struct),0)<0){
 		perror("simplex-talk: send HELLO packet");
@@ -77,8 +77,7 @@ int main(){
 
 	/*iterate until the server sends TERMINATION packet.*/
 	while(1){
-
-		//receive packet.
+		/*receive packet.*/
 		if(recv(s, &buf_struct_rcv, sizeof(buf_struct))<0){
 			perror("simplex-talk: receive instruction packet");
 			printf("%d",count);
@@ -87,7 +86,7 @@ int main(){
 		}
 		++count;
 
-		//parser received data.
+		/*parser received data.*/
 		switch(buf_struct_rcv.flag){
 			case FLAG_HELLO:
 				printf("received hello message from the server");
