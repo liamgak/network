@@ -31,10 +31,13 @@ int main(){
 
 	struct sockaddr_in sin;
 	int s;
-	
+	//count received packet.
+	int count=0;
+
 	//HELLO packet
 	unsigned int value;
 	struct hw_packet buf_struct;
+	struct hw_packet buf_struct_rcv;
 	buf_struct.flag=FLAG_HELLO;
 	buf_struct.operation=OP_ECHO;
 	buf_struct.data_len=4;
@@ -49,6 +52,8 @@ int main(){
 	sin.sin_port=htons(SERVER_PORT);
 	sin.sin_addr.s_addr=inet_addr("127.0.0.1");
 
+	printf("*** starting ***\n\n");
+	
 	/* active open */
 	/* socket for accessing server */
     if((s=socket(PF_INET,SOCK_STREAM,0)) < 0 ){
@@ -61,12 +66,48 @@ int main(){
 		exit(1);
 	}
 	
-	//send HELLO packet
+	printf("sending first hello msg...")
+	/*send HELLO packet.*/
 	if(send(s,&buf_struct,sizeof(buf_struct),0)<0){
 		perror("simplex-talk: send HELLO packet");
 		close(s);
 		exit(1);
 	}	
+	++count;
+
+	/*iterate until the server sends TERMINATION packet.*/
+	while(1){
+
+		//receive packet.
+		if(recv(s, &buf_struct_rcv, sizeof(buf_struct))<0){
+			perror("simplex-talk: receive instruction packet");
+			print("%d",count);
+			close(s);
+			exit(1);
+		}
+		++count;
+
+		//parser received data.
+		switch(buf_struct_rcv.flag){
+			case FLAG_HELLO:
+				printf("received hello message from the server");
+				break;
+			
+			case FLAG_INSTRUCTION:
+				break;
+			
+			case FLAG_RESPONSE:
+				break;
+			
+			case FLAG_TERMINATE:
+				break;
+
+			default:
+				perror("simplex-talk: parse received packet");
+		}
+	} 
+
+
 
 	return 0;
 }
